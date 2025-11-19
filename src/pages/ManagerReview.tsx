@@ -4,6 +4,50 @@ import { LeaveCard } from '@/components/LeaveCard';
 import { Button } from '@/components/ui/button';
 import { Loader } from '@/components/ui/Loader';
 import { Check, X } from 'lucide-react';
+import { LeaveRequest } from '@/services/leavesService';
+
+// Static leave requests approved by HR for manager review
+const staticReviewableLeaves: LeaveRequest[] = [
+  {
+    id: '4',
+    employeeId: 'emp-2',
+    employeeName: 'Samir',
+    type: 'normal',
+    startDate: '2025-01-25',
+    endDate: '2025-01-27',
+    days: 3,
+    status: 'initial_approved',
+    createdAt: '2025-01-20T11:00:00Z',
+    notes: 'Personal matters',
+    urgentAuto: false,
+  },
+  {
+    id: '5',
+    employeeId: 'emp-3',
+    employeeName: 'Said',
+    type: 'normal',
+    startDate: '2025-02-10',
+    endDate: '2025-02-14',
+    days: 5,
+    status: 'initial_approved',
+    createdAt: '2025-01-28T09:30:00Z',
+    notes: 'Vacation with family',
+    urgentAuto: false,
+  },
+  {
+    id: '6',
+    employeeId: 'emp-4',
+    employeeName: 'Eng Rawan',
+    type: 'urgent',
+    startDate: '2025-01-22',
+    endDate: '2025-01-22',
+    days: 1,
+    status: 'initial_approved',
+    createdAt: '2025-01-21T15:00:00Z',
+    notes: 'Emergency personal issue',
+    urgentAuto: true,
+  },
+];
 
 const ManagerReview = () => {
   const { leaves, isLoading, fetchLeaves, updateLeaveStatus } = useLeaves();
@@ -13,14 +57,16 @@ const ManagerReview = () => {
   }, []);
 
   const handleAccept = async (id: string) => {
-    await updateLeaveStatus(id, 'manager_accept');
+    // Static action - in real scenario, this would update the status
+    console.log('Accept leave request:', id);
   };
 
   const handleRefuse = async (id: string) => {
-    await updateLeaveStatus(id, 'manager_refuse');
+    // Static action - in real scenario, this would update the status
+    console.log('Refuse leave request:', id);
   };
 
-  const reviewableLeaves = leaves.filter(leave => leave.status === 'initial_approved');
+  const reviewableLeaves = staticReviewableLeaves;
 
   return (
     <div className="space-y-6">

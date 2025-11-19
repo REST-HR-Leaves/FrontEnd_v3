@@ -4,21 +4,56 @@ export const mockUsers = [
     role: "manager",
     email: "manager@company.com",
     password: "123456",
-    name: "Manager User"
+    name: "Sewalim"
   },
   {
     id: "2",
     role: "hr",
     email: "hr@company.com",
     password: "123456",
-    name: "HR User"
+    name: "Asmaa"
   },
   {
     id: "emp-1",
     role: "employee",
-    email: "john@company.com",
+    email: "anas@gmail.com",
     password: "123456",
-    name: "John Doe"
+    name: "anas"
+  },
+  {
+    id: "emp-2",
+    role: "employee",
+    email: "samir@company.com",
+    password: "123456",
+    name: "Samir"
+  },
+  {
+    id: "emp-3",
+    role: "employee",
+    email: "said@company.com",
+    password: "123456",
+    name: "Said"
+  },
+  {
+    id: "emp-4",
+    role: "employee",
+    email: "rawan@company.com",
+    password: "123456",
+    name: "Eng Rawan"
+  },
+  {
+    id: "emp-5",
+    role: "employee",
+    email: "fady@company.com",
+    password: "123456",
+    name: "Eng Fady"
+  },
+  {
+    id: "emp-6",
+    role: "employee",
+    email: "saber@company.com",
+    password: "123456",
+    name: "Saber"
   }
 ];
 

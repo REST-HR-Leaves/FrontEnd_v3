@@ -13,29 +13,30 @@ export const Sidebar = () => {
   const { user } = useAuth();
 
   const getNavItems = () => {
-    const baseItems = [
+    if (user?.role === 'manager') {
+      // Manager only sees Manager Review and Profile
+      return [
+        { to: '/manager-review', label: 'Manager Review', icon: CheckSquare },
+        { to: '/profile', label: 'Profile', icon: User },
+      ];
+    }
+
+    if (user?.role === 'hr') {
+      // HR sees Dashboard, HR Dashboard, New Request, and Profile
+      return [
+        { to: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
+        { to: '/hr-dashboard', label: 'HR Dashboard', icon: Users },
+        { to: '/leave-request', label: 'New Request', icon: FileText },
+        { to: '/profile', label: 'Profile', icon: User },
+      ];
+    }
+
+    // Employee sees Dashboard, New Request, and Profile
+    return [
       { to: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
       { to: '/leave-request', label: 'New Request', icon: FileText },
       { to: '/profile', label: 'Profile', icon: User },
     ];
-
-    if (user?.role === 'hr') {
-      baseItems.splice(2, 0, { 
-        to: '/hr-dashboard', 
-        label: 'HR Dashboard', 
-        icon: Users 
-      });
-    }
-
-    if (user?.role === 'manager') {
-      baseItems.splice(2, 0, { 
-        to: '/manager-review', 
-        label: 'Manager Review', 
-        icon: CheckSquare 
-      });
-    }
-
-    return baseItems;
   };
 
   return (

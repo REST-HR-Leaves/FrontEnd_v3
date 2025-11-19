@@ -113,7 +113,7 @@ const Login = () => {
               <p className="mb-2 font-medium">Demo Accounts:</p>
               <p>Manager: manager@company.com / 123456</p>
               <p>HR: hr@company.com / 123456</p>
-              <p>Employee: john@company.com / 123456</p>
+              <p>Employee: anas@gmail.com / 123456</p>
             </div>
             <div className="text-center text-sm">
               <Link to="/signup" className="text-secondary hover:underline font-medium">

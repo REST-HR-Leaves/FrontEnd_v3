@@ -1,28 +1,68 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useAuth } from '@/context/AuthContext';
-import { useLeaves } from '@/context/LeavesContext';
 import { BalanceOverview } from '@/components/BalanceOverview';
 import { LeaveCard } from '@/components/LeaveCard';
 import { Button } from '@/components/ui/button';
-import { Loader } from '@/components/ui/Loader';
 import { Plus } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-import { employeesService } from '@/services/employeesService';
+import { LeaveRequest } from '@/services/leavesService';
+
+// Static leave requests data for employee
+const staticLeaveRequests: LeaveRequest[] = [
+  {
+    id: '1',
+    employeeId: 'emp-1',
+    employeeName: 'Maha',
+    type: 'normal',
+    startDate: '2025-01-15',
+    endDate: '2025-01-17',
+    days: 3,
+    status: 'approved',
+    createdAt: '2025-01-10T10:00:00Z',
+    notes: 'Family vacation',
+    urgentAuto: false,
+  },
+  {
+    id: '2',
+    employeeId: 'emp-1',
+    employeeName: 'Maha',
+    type: 'urgent',
+    startDate: '2025-01-20',
+    endDate: '2025-01-20',
+    days: 1,
+    status: 'pending',
+    createdAt: '2025-01-19T14:30:00Z',
+    notes: 'Medical appointment',
+    urgentAuto: true,
+  },
+  {
+    id: '3',
+    employeeId: 'emp-1',
+    employeeName: 'Maha',
+    type: 'normal',
+    startDate: '2025-02-01',
+    endDate: '2025-02-05',
+    days: 5,
+    status: 'initial_approved',
+    createdAt: '2025-01-25T09:00:00Z',
+    notes: 'Personal leave',
+    urgentAuto: false,
+  },
+];
+
+// Static balance data
+const staticBalance = { urgentDays: 5, normalDays: 15 };
 
 const Dashboard = () => {
   const { user } = useAuth();
-  const { leaves, isLoading, fetchLeaves } = useLeaves();
   const navigate = useNavigate();
-  const [balance, setBalance] = useState({ urgentDays: 0, normalDays: 0 });
+  const [balance] = useState(staticBalance);
 
-  useEffect(() => {
-    if (user?.id) {
-      fetchLeaves(user.id);
-      employeesService.getLeaveBalances(user.id).then(setBalance);
-    }
-  }, [user?.id]);
-
-  const myLeaves = leaves.filter(leave => leave.employeeId === user?.id);
+  // Use the logged-in user's name for displaying leave cards
+  const myLeaves = staticLeaveRequests.map((leave) => ({
+    ...leave,
+    employeeName: user?.name ?? leave.employeeName,
+  }));
 
   return (
     <div className="space-y-6">
@@ -41,9 +81,7 @@ const Dashboard = () => {
 
       <div>
         <h2 className="text-2xl font-semibold mb-4 text-secondary">My Leave Requests</h2>
-        {isLoading ? (
-          <Loader className="py-8" />
-        ) : myLeaves.length === 0 ? (
+        {myLeaves.length === 0 ? (
           <p className="text-center text-muted-foreground py-8">
             No leave requests yet. Create your first one!
           </p>

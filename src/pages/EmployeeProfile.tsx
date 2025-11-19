@@ -1,30 +1,19 @@
-import { useEffect, useState } from 'react';
-import { useAuth } from '@/context/AuthContext';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { BalanceOverview } from '@/components/BalanceOverview';
-import { employeesService, Employee } from '@/services/employeesService';
-import { Loader } from '@/components/ui/Loader';
-import { User, Mail, Briefcase, Building } from 'lucide-react';
+import { User, Mail } from 'lucide-react';
+import { useAuth } from '@/context/AuthContext';
 
 const EmployeeProfile = () => {
   const { user } = useAuth();
-  const [employee, setEmployee] = useState<Employee | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
 
-  useEffect(() => {
-    if (user?.id) {
-      employeesService.getEmployeeById(user.id)
-        .then(setEmployee)
-        .finally(() => setIsLoading(false));
-    }
-  }, [user?.id]);
+  // Default balance - can be made dynamic later
+  const defaultBalance = {
+    urgentDays: 5,
+    normalDays: 15,
+  };
 
-  if (isLoading) {
-    return <Loader className="py-8" />;
-  }
-
-  if (!employee) {
-    return <div>Employee not found</div>;
+  if (!user) {
+    return <div>Please log in to view your profile</div>;
   }
 
   return (
@@ -43,40 +32,22 @@ const EmployeeProfile = () => {
             <User className="h-5 w-5 text-muted-foreground" />
             <div>
               <p className="text-sm text-muted-foreground">Name</p>
-              <p className="font-medium">{employee.name}</p>
+              <p className="font-medium">{user.name}</p>
             </div>
           </div>
           <div className="flex items-center gap-3">
             <Mail className="h-5 w-5 text-muted-foreground" />
             <div>
               <p className="text-sm text-muted-foreground">Email</p>
-              <p className="font-medium">{employee.email}</p>
+              <p className="font-medium">{user.email}</p>
             </div>
           </div>
-          {employee.position && (
-            <div className="flex items-center gap-3">
-              <Briefcase className="h-5 w-5 text-muted-foreground" />
-              <div>
-                <p className="text-sm text-muted-foreground">Position</p>
-                <p className="font-medium">{employee.position}</p>
-              </div>
-            </div>
-          )}
-          {employee.department && (
-            <div className="flex items-center gap-3">
-              <Building className="h-5 w-5 text-muted-foreground" />
-              <div>
-                <p className="text-sm text-muted-foreground">Department</p>
-                <p className="font-medium">{employee.department}</p>
-              </div>
-            </div>
-          )}
         </CardContent>
       </Card>
 
       <div>
         <h2 className="text-2xl font-semibold mb-4 text-secondary">Leave Balance</h2>
-        <BalanceOverview balance={employee.balance} />
+        <BalanceOverview balance={defaultBalance} />
       </div>
     </div>
   );
